@@ -4107,8 +4107,13 @@ spec:
               name: cni-bin-dir
           securityContext:
             privileged: false
+            runAsUser: 10000
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
         # This container installs the CNI binaries
         # and CNI network config file on each node.
         - name: install-cni
@@ -4150,8 +4155,13 @@ spec:
               name: cni-net-dir
           securityContext:
             privileged: false
+            runAsUser: 10000
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
         # Adds a Flex Volume Driver that creates a per-pod Unix Domain Socket to allow Dikastes
         # to communicate with Felix over the Policy Sync API.
         - name: flexvol-driver
@@ -4161,8 +4171,13 @@ spec:
             mountPath: /host/driver
           securityContext:
             privileged: false
+            runAsUser: 10000
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
       containers:
         # Runs calico-node container on each Kubernetes node. This
         # container programs network policy and routes on each
@@ -4240,8 +4255,13 @@ spec:
               value: "true"
           securityContext:
             privileged: false
+            runAsUser: 10000
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: 250m
@@ -4294,7 +4314,7 @@ spec:
               mountPath: /sys/fs/
               # Bidirectional means that, if we mount the BPF filesystem at /sys/fs/bpf it will propagate to the host.
               # If the host is known to mount that filesystem already then Bidirectional can be omitted.
-              mountPropagation: Bidirectional
+              mountPropagation: None
             - name: cni-log-dir
               mountPath: /var/log/calico/cni
               readOnly: true
@@ -4390,6 +4410,7 @@ spec:
       containers:
         - name: calico-kube-controllers
           image: docker.io/calico/kube-controllers:v3.21.2
+          imagePullPolicy: Always
           env:
             # Choose which controllers to run.
             - name: ENABLED_CONTROLLERS
