@@ -1,4 +1,4 @@
-FROM maven:3-jdk-8-slim as build
+FROM busybox:latest as build
 COPY pom.xml pom.xml
 COPY src src
 RUN --mount=target=$HOME/.m2,type=cache mvn clean package#
