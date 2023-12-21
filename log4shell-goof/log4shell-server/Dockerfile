@@ -1,7 +1,7 @@
-#FROM maven:3-jdk-8-slim as build
-#COPY pom.xml pom.xml
-#COPY src src
-#RUN --mount=target=$HOME/.m2,type=cache mvn clean package#
+FROM maven:3-jdk-8-slim as build
+COPY pom.xml pom.xml
+COPY src src
+RUN --mount=target=$HOME/.m2,type=cache mvn clean package#
 
 #FROM openjdk:23-jdk as ldap
 #COPY --from=build target/log4shell-server-*-jar-with-dependencies.jar /server.jar
