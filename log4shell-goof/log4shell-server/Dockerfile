@@ -1,4 +1,4 @@
-FROM maven:3.8.8-amazoncorretto-8-al2023 as build
+FROM maven:3.9.9-amazoncorretto-8-al2023 as build
 COPY pom.xml pom.xml
 COPY src src
 RUN --mount=target=$HOME/.m2,type=cache mvn clean package#
